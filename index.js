@@ -4,17 +4,6 @@ const io = require("socket.io")(4100, {
   },
 });
 
-<<<<<<< HEAD
-let users = [];
-
-const addUser = (userId, socketId) => {
-  !users.some((user) => user.userId === userId) &&
-      users.push({ userId, socketId });
-};
-
-const getUser = (userId) => {
-  return users.find((user) => user.userId === userId);
-=======
 let user = [];
 
 const addUser = (userId, socketId) => {
@@ -24,7 +13,6 @@ const addUser = (userId, socketId) => {
 
 const getUser = (userId) => {
   return user.find((user) => user.userId === userId);
->>>>>>> d11ec0bb77d7c5d59180a7e9ee303d44d50705e7
 };
 
 const removeUser = (socketId) => {
@@ -37,41 +25,6 @@ io.on("connection", (socket) => {
   socket.emit('me', socket.id);
 
   socket.on("addUser", (userId) => {
-<<<<<<< HEAD
-      addUser(userId, socket.id);
-      io.emit("getUsers", users);
-  });
-
-  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-      const user = getUser(receiverId);
-      if (user) {
-          io.to(user.socketId).emit("getMessage", {
-              senderId, text
-          });
-      }
-  });
-
-  socket.on("callUser", (data) => {
-      io.to(data.userToCall).emit("callUser", {
-          signal: data.signalData,
-          from: data.from,
-          name: data.name,
-      });
-  });
-
-  socket.on("answerCall", (data) => {
-      io.to(data.to).emit("callAccepted", data.signal);
-  });
-
-  socket.on("disconnect-video", () => {
-      socket.broadcast.emit("callEnded");
-  });
-
-  socket.on("disconnect", () => {
-      console.log("User disconnected:", socket.id);
-      removeUser(socket.id);
-      io.emit("getUsers", users);
-=======
     addUser(userId, socket.id);
     io.emit("getUsers", user);
   });
@@ -112,6 +65,5 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     removeUser(socket.id);
     io.emit("getUsers", user);
->>>>>>> d11ec0bb77d7c5d59180a7e9ee303d44d50705e7
   });
 });
